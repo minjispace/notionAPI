@@ -1,5 +1,5 @@
 import express from "express";
-import { getPageInfo, getBreadcrumbs, getSubPages } from "../modules/index.js";
+import { getPageInfo, getBreadcrumbs, getSubPages } from "../utils/index.js";
 import { db } from "../db/index.js";
 
 const router = express.Router();
