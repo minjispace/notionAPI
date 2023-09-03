@@ -1,10 +1,6 @@
 import express from "express";
-import { db } from "../db/index.js";
-import {
-  getPageInfo,
-  getChildBreadcrumbs,
-  getSubPages,
-} from "../utils/index.js";
+import { db } from "../db.js";
+import { getPageInfo, getBreadcrumbs, getSubPages } from "../utils/index.js";
 
 const router = express.Router();
 
@@ -24,7 +20,9 @@ router.get("/pages/:pageId", async (req, res) => {
     const subPages = await getSubPages(pageId, db);
 
     // get breadcrumbs
-    const breadcrumbs = await getChildBreadcrumbs(pageId, db);
+    const breadcrumbs = await getBreadcrumbs(pageId, db);
+
+    if (!breadcrumbs) return;
 
     // convert breadcrumbs to string
     const breadcrumbsString = breadcrumbs
