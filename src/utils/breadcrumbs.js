@@ -3,8 +3,15 @@ import { getPageInfo } from "./index.js";
 // 브로드 크럼스 조회 함수
 export function getBreadcrumbs(pageId, db, callback) {
   function getChildBreadcrumbs(pageId, breadcrumbs, callback) {
-    getPageInfo(pageId, db, (page) => {
-      // page가 있을때
+    const query = "SELECT title, parent_page_id FROM Pages WHERE page_id = ?";
+
+    db.query(query, [pageId], (error, results) => {
+      if (error) {
+        console.error("MySQL query error:", error);
+        callback(breadcrumbs);
+        return;
+      }
+      const page = results[0];
       if (page) {
         breadcrumbs.unshift(page.title);
         if (page.parent_page_id) {
@@ -12,8 +19,6 @@ export function getBreadcrumbs(pageId, db, callback) {
         } else {
           callback(breadcrumbs);
         }
-
-        // page가 없을 때
       } else {
         callback(breadcrumbs);
       }
