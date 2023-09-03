@@ -8,13 +8,7 @@ CREATE TABLE Pages (
     INDEX parent_page_id_index (parent_page_id) 
 );
 
--- Breadcrumbs 테이블
-CREATE TABLE Breadcrumbs (
-    breadcrumb_id INT PRIMARY KEY AUTO_INCREMENT,
-    page_id INT,
-    breadcrumb_text VARCHAR(255),
-    FOREIGN KEY (page_id) REFERENCES Pages(page_id)
-);
+
 -- insert into pages
 INSERT INTO Pages (title, content, parent_page_id) VALUES ('페이지 1', '페이지 1의 내용', NULL);
 INSERT INTO Pages (title, content, parent_page_id) VALUES ('페이지 1-1', '페이지 1-1의 내용', 1);
