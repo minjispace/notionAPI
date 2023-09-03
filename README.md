@@ -1,7 +1,7 @@
 # notion API
 
 ### 1. 실행 방법 참고
-1. **Git clone **
+1. **Git clone**
 ```
 git clone https://github.com/minjispace/notionAPI.git
 ```
