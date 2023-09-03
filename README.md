@@ -19,10 +19,10 @@ npm i
 docker compose up
 ```
 4. **Create database**
-    - query.sql 코드 참고 (CREATE TABLE Pages)
+    - query.sql 코드 참고해서 database 생성 (CREATE TABLE Pages)
 
 5. **Insert test data**
-    - query.sql 코드 참고 (INSERT INTO Pages)
+    - query.sql 코드 참고해서 data 넣기 (INSERT INTO Pages)
 
 6. **Server start**
 ```
