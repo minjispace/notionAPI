@@ -1,61 +1,49 @@
-import { db } from "../db.js";
-import { getPageInfo } from "./index.js";
-
-// 주어진 페이지 ID를 사용하여 해당 페이지의 부모 페이지의 제목을 조회
-// 이를 통해 현재 페이지의 상위 페이지 title 알아내기
-async function getParentTitle(pageId) {
-  // SQL 쿼리문: 주어진 pageId에 대한 부모 페이지의 제목을 조회
+// 주어진 pageId를 사용하여 부모 페이지의 제목을 조회하는 비동기 함수
+// 데이터베이스에서 페이지 정보를 검색하고,
+// 페이지 계층 구조를 따라 부모 페이지를 재귀적으로 찾아 브로드 크럼스를 생성
+async function getParentTitle(pageId, db) {
+  // query
   const query = `
-    SELECT title
+    SELECT title, parent_page_id
     FROM Pages
-    WHERE page_id = (SELECT parent_page_id FROM Pages WHERE page_id = ?)
+    WHERE page_id = ?
   `;
 
   return new Promise((resolve, reject) => {
-    db.query(query, [pageId], (error, results) => {
+    db.query(query, [pageId], async (error, results) => {
+      // SQL 쿼리문 실행에 실패
       if (error) {
         console.error("❌ getParentTitle query error:", error);
         reject(error);
+        // SQL 쿼리문 실행에 결과가 0개
       } else if (results.length === 0) {
         resolve(null);
       } else {
-        resolve(results[0].title);
+        // SQL 쿼리문 실행에 결과가 존재
+        // 쿼리 결과에서 부모 페이지의 정보를 추출하고,
+        // 부모 페이지가 있는 경우, 재귀적으로 getParentTitle 함수를 호출
+        // 부모 페이지의 부모 페이지를 찾아 브로드 크럼스를 구성
+        const { title, parent_page_id } = results[0];
+
+        // 부모 페이지가 있는 경우
+        if (parent_page_id) {
+          // 또 그 부모 페이지를 찾아 브로드 크럼스를 구성
+          const parentTitle = await getParentTitle(parent_page_id, db);
+          if (parentTitle) {
+            resolve(parentTitle + " / " + title.trim());
+          } else {
+            resolve(title.trim());
+          }
+          // 부모 페이지가 없는 경우
+        } else {
+          resolve(title.trim());
+        }
       }
     });
   });
 }
 
-// 브로드 크럼스 조회 함수 (재귀적으로 async/await 활용
+// 브로드 크럼스 조회 함수
 export async function getBreadcrumbs(pageId, db) {
-  async function getChildBreadcrumbs(pageId, breadcrumbs) {
-    // 현재 페이지 정보 조회
-    const page = await getPageInfo(pageId, db);
-
-    // 페이지 정보가 없는 경우, 그냥 현재 브로드 크럼스를 반환
-    if (!page) {
-      return breadcrumbs;
-    }
-
-    // 부모 페이지의 제목을 조회
-    const parentTitle = await getParentTitle(pageId);
-
-    // 부모 페이지의 title을 추가
-    if (parentTitle) {
-      breadcrumbs.push(parentTitle.trim());
-    }
-
-    // 현재 페이지의 title을 추가
-    breadcrumbs.push(page.title.trim());
-
-    // 부모 페이지가 존재하는 경우, 재귀적으로 상위 페이지 경로를 조회
-    if (page.parent_page_id) {
-      return getChildBreadcrumbs(page.parent_page_id, breadcrumbs);
-    } else {
-      // 최상위 페이지(루트 페이지)에 도달한 경우, 브로드 크럼스를 반환
-      return breadcrumbs;
-    }
-  }
-
-  // getChildBreadcrumbs 함수를 호출하여 브로드 크럼스를 조회하고 반환
-  return await getChildBreadcrumbs(pageId, []);
+  return await getParentTitle(pageId, db);
 }

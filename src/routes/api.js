@@ -8,24 +8,15 @@ router.get("/pages/:pageId", async (req, res) => {
   const pageId = req.params.pageId;
 
   try {
-    // getPageInfo
+    // get page, subpage, breadcrumbs
     const page = await getPageInfo(pageId, db);
-
-    // get subPages
     const subPages = await getSubPages(pageId, db);
-
-    // get breadcrumbs
     const breadcrumbs = await getBreadcrumbs(pageId, db);
 
     // page not found throw 404 error
     if (!page) {
       return res.status(404).json({ error: "❌ Page not found" });
     }
-
-    // convert breadcrumbs to string
-    const breadcrumbsString = breadcrumbs
-      .map((crumb) => crumb.trim())
-      .join(" / ");
 
     // return page info
     res.status(200).json({
@@ -35,7 +26,7 @@ router.get("/pages/:pageId", async (req, res) => {
         pageId: subPage.page_id,
         title: subPage.title,
       })),
-      breadcrumbs: breadcrumbsString,
+      breadcrumbs,
     });
   } catch (error) {
     console.error(`❌ Error pagesInfo api route:`, error);
