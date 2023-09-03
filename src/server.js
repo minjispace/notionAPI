@@ -1,5 +1,6 @@
 import express from "express";
-import db from "./db/db.js";
+import apiRouter from "./routes/api.js";
+import { db } from "./db/index.js";
 
 const app = express();
 const PORT = 3000;
@@ -8,7 +9,7 @@ const PORT = 3000;
 app.use(express.json());
 
 // routes
-app.get("/", (req, res) => {});
+app.use("/api/v1", apiRouter);
 
 // Start Server
 const startServer = async () => {
