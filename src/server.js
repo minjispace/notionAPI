@@ -1,6 +1,6 @@
 import express from "express";
 import apiRouter from "./routes/api.js";
-import { db } from "./db/index.js";
+import { db } from "./db.js";
 
 const app = express();
 const PORT = 3000;
