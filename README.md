@@ -18,46 +18,45 @@ npm i
 ```
 docker compose up
 ```
-#### 4. **Create database**
-    - mysql container 들어가서 접속
-        ```
-        mysql -u root -p
-        password: notionpassword
-        ```
-    - query.sql 코드 참고해서 복사해서 database 생성 (CREATE TABLE Pages)
+#### 4. ** Enter database, Create tables, Insert data**
+1. mysql container 들어가서 접속
+```
+mysql -u root -p
+password: notionpassword
+```
+2. query.sql 코드 참고해서 복사해서 database 생성 (CREATE TABLE Pages)
 
-#### 5. **Insert test data**
-    - query.sql 코드 참고해서 복사해서 data 넣기 (INSERT INTO Pages)
+3. query.sql 코드 참고해서 복사해서 data 넣기 (INSERT INTO Pages)
 
-#### 6. **Server start**
-    ```
-    yarn start 
-        or
-    npm run start
-    ```
+#### 5. **Server start**
+```
+yarn start 
+   or
+npm run start
+```
 
-#### 7. **Postman Test**
+#### 6. **Postman Test**
 🔥 API endpoint: **/api/v1/pages/:pageId**
-    1. postman 실행
-    2. GET http://localhost:3000/api/v1/pages/8
-    3. 반환되는 데이터 값
-    ```
+1. postman 실행
+2. GET http://localhost:3000/api/v1/pages/8
+3. 반환되는 데이터 값
+```
+{
+"pageId": 8,
+"title": "2-1",
+"subPages": [
     {
-    "pageId": 8,
-    "title": "2-1",
-    "subPages": [
-        {
-        "pageId": 9,
-        "title": "2-1-1"
-        },
-        {
-        "pageId": 10,
-        "title": "2-1-2"
-        }
-    ],
-    "breadcrumbs": "2 / 2-1"
+    "pageId": 9,
+    "title": "2-1-1"
+    },
+    {
+    "pageId": 10,
+    "title": "2-1-2"
     }
-    ```
+],
+"breadcrumbs": "2 / 2-1"
+}
+```
 
 ---
 ## 2.Table 구조
