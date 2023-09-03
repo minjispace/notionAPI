@@ -18,7 +18,7 @@ npm i
 ```
 docker compose up
 ```
-#### 4. ** Enter database, Create tables, Insert data**
+#### 4. **Enter database, Create tables, Insert data**
 1. mysql container 들어가서 접속
 ```
 mysql -u root -p
@@ -77,8 +77,9 @@ npm run start
 
 ---
 ## 3. Database ERD
-- self relation table 형태
-![ERD image](<public/ERD.png>)
+
+
+ ![ERD image](<public/ERD.png>)
 
 ---
 ## 4. 주요 접근 방식
