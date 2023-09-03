@@ -11,18 +11,16 @@ router.get("/pages/:pageId", async (req, res) => {
     // getPageInfo
     const page = await getPageInfo(pageId, db);
 
-    // page not found throw 404 error
-    if (!page) {
-      return res.status(404).json({ error: "Page not found" });
-    }
-
     // get subPages
     const subPages = await getSubPages(pageId, db);
 
     // get breadcrumbs
     const breadcrumbs = await getBreadcrumbs(pageId, db);
 
-    if (!breadcrumbs) return;
+    // page not found throw 404 error
+    if (!page) {
+      return res.status(404).json({ error: "❌ Page not found" });
+    }
 
     // convert breadcrumbs to string
     const breadcrumbsString = breadcrumbs
