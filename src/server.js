@@ -23,7 +23,7 @@ const startServer = async () => {
       console.log(`✅ Server started on port ${PORT}`);
     });
   } catch (error) {
-    console.log(error, "❌ Error connecting to database");
+    console.log(error, "❌ Error connecting to mysql database");
   }
 };
 
