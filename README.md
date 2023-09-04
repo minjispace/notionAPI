@@ -81,6 +81,8 @@ npm run start
 
  ![ERD image](<public/ERD.png>)
 
+## 4. Pages table data
+ ![Pages table data image](<public/data.png>)
 ---
 ## 4. 주요 접근 방식
 #### 1. Self relation 트리구조 데이터베이스
